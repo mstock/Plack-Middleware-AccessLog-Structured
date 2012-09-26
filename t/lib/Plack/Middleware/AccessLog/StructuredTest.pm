@@ -17,7 +17,7 @@ use JSON;
 sub basic_log_test : Test(2) {
 	my ($self) = @_;
 
-	my $app = sub { [200, [], ['ok']] };
+	my $app = sub { [200, ['Content-Type' => 'text/plain'], ['ok']] };
 	my @log;
 	my $wrapped_app = Plack::Middleware::AccessLog::Structured->wrap($app,
 		logger  => sub {
@@ -47,6 +47,7 @@ sub basic_log_test : Test(2) {
 			request_uri      => '/',
 			response_status  => 200,
 			content_length   => 2,
+			content_type     => 'text/plain',
 			server_protocol  => 'HTTP/1.1',
 			date             => re('^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$'),
 			epochtime        => re('^\d+(?:\.\d+)?$')

@@ -111,17 +111,18 @@ sub call {
 			remote_addr      => $env->{REMOTE_ADDR},
 			request_method   => _safe($env->{REQUEST_METHOD}),
 			request_uri      => _safe($env->{REQUEST_URI}),
+			server_protocol  => $env->{SERVER_PROTOCOL},
 			http_user_agent  => _safe($env->{HTTP_USER_AGENT}),
 			http_host        => $env->{HTTP_HOST} || $env->{SERVER_NAME},
 			http_referer     => $env->{HTTP_REFERER},
 			# Server information
 			pid              => $$,
-			server_protocol  => $env->{SERVER_PROTOCOL},
 			hostfqdn         => hostfqdn(),
 			hostname         => hostname(),
 			# Response data
 			response_status  => $cb_res->[0],
 			content_length   => Plack::Util::content_length($res->[2]) || $h->get('Content-Length'),
+			content_type     => $h->get('Content-Type') || undef,
 			# Timing
 			request_duration => ( $t_after - $t_before ) * 1000,
 			date             => DateTime->from_epoch(epoch => $t_before)->strftime('%Y-%m-%dT%H:%M:%S.%3NZ'),
