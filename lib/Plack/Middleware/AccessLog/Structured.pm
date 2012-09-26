@@ -113,6 +113,7 @@ sub call {
 			request_uri      => _safe($env->{REQUEST_URI}),
 			http_user_agent  => _safe($env->{HTTP_USER_AGENT}),
 			http_host        => $env->{HTTP_HOST} || $env->{SERVER_NAME},
+			http_referer     => $env->{HTTP_REFERER},
 			# Server information
 			pid              => $$,
 			server_protocol  => $env->{SERVER_PROTOCOL},
@@ -125,7 +126,6 @@ sub call {
 			request_duration => ( $t_after - $t_before ) * 1000,
 			date             => DateTime->from_epoch(epoch => $t_before)->strftime('%Y-%m-%dT%H:%M:%S.%3NZ'),
 			epochtime        => $t_before,
-
 		};
 
 		if ($self->extra_field()) {

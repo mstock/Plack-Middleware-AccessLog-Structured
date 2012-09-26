@@ -27,7 +27,7 @@ sub basic_log_test : Test(2) {
 
 	test_psgi($wrapped_app, sub {
 		my ($cb) = @_;
-		my $response = $cb->(GET '/');
+		my $response = $cb->(GET '/', Referer => 'http://localhost/foo');
 	});
 
 	is(scalar @log, 1, 'message count ok');
@@ -39,6 +39,7 @@ sub basic_log_test : Test(2) {
 			hostname         => re('^[\w\.-]+$'),
 			http_host        => 'localhost',
 			http_user_agent  => undef,
+			http_referer     => 'http://localhost/foo',
 			pid              => $$,
 			remote_addr      => '127.0.0.1',
 			request_duration => re('^\d+\.\d+$'),
