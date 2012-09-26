@@ -40,6 +40,7 @@ sub basic_log_test : Test(2) {
 			http_host        => 'localhost',
 			http_user_agent  => undef,
 			http_referer     => 'http://localhost/foo',
+			remote_user      => undef,
 			pid              => $$,
 			remote_addr      => '127.0.0.1',
 			request_duration => re('^\d+\.\d+$'),

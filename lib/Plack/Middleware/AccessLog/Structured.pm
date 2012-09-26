@@ -44,6 +44,7 @@ returns C<ok>, the following, JSON-encoded message would be logged:
 		"request_method": "GET",
 		"request_uri": "/",
 		"server_protocol": "HTTP/1.1",
+		"remote_user": null,
 		"http_referer": null,
 		"http_user_agent": "Mozilla/5.0 [...]",
 		"request_duration": 0.0679492950439453,
@@ -141,6 +142,7 @@ sub call {
 			http_user_agent  => _safe($env->{HTTP_USER_AGENT}),
 			http_host        => $env->{HTTP_HOST} || $env->{SERVER_NAME},
 			http_referer     => $env->{HTTP_REFERER},
+			remote_user      => $env->{REMOTE_USER},
 			# Server information
 			pid              => $$,
 			hostfqdn         => hostfqdn(),
