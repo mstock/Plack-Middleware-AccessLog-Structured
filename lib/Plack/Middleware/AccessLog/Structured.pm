@@ -36,6 +36,32 @@ use JSON;
 Plack::Middleware::AccessLog::Structured is a L<Plack::Middleware|Plack::Middleware>
 which logs structured messages.
 
+If the above example is used with a basic L<PSGI|PSGI> application that simply
+returns C<ok>, the following, JSON-encoded message would be logged:
+
+	{
+		"remote_addr": "127.0.0.1",
+		"request_method": "GET",
+		"request_uri": "/",
+		"server_protocol": "HTTP/1.1",
+		"http_referer": null,
+		"http_user_agent": "Mozilla/5.0 [...]",
+		"request_duration": 0.0679492950439453,
+		"epochtime": 1348687439.49608,
+		"date": "2012-09-26T19:23:59.496Z",
+		"hostfqdn": "some.hostname.tld",
+		"hostname": "some",
+		"http_host": "localhost:5000",
+		"pid": 4777,
+		"log_field": null,
+		"another_log_field": null,
+		"foo": "bar",
+		"response_status": 200,
+		"content_length": 2,
+		"content_type": "text/plain",
+		"class": "Plack::Middleware::AccessLog::Structured"
+	}
+
 =head1 METHODS
 
 =head2 new
@@ -62,8 +88,8 @@ be copied to the corresponding fields in the log message, using this mapping.
 
 =item logger
 
-A callback to pass encoded log messages to. By default, log messages are printed
-to the C<psgi.errors> output stream.
+A callback to pass the JSON-encoded log messages to. By default, log messages
+are printed to the C<psgi.errors> output stream.
 
 =back
 
