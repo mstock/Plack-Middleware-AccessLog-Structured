@@ -1,7 +1,7 @@
 package Plack::Middleware::AccessLog::Structured;
 use parent qw(Plack::Middleware);
 
-# ABSTRACT: Access log middleware which uses structured log messages
+# ABSTRACT: Access log middleware which creates structured log messages
 
 use strict;
 use warnings;
@@ -34,10 +34,11 @@ use JSON;
 =head1 DESCRIPTION
 
 Plack::Middleware::AccessLog::Structured is a L<Plack::Middleware|Plack::Middleware>
-which logs structured messages.
+which creates and logs structured messages.
 
 If the above example is used with a basic L<PSGI|PSGI> application that simply
-returns C<ok>, the following, JSON-encoded message would be logged:
+returns C<ok>, the following, JSON-encoded message would be logged (on one log
+line):
 
 	{
 		"remote_addr": "127.0.0.1",
