@@ -170,7 +170,7 @@ sub call {
 			$log_entry = $self->callback()->($env, $log_entry);
 		}
 
-		my $logger = $self->logger() || sub { $env->{'psgi.errors'}->print(@_, "\n") };
+		my $logger = $self->logger() || sub { $env->{'psgi.errors'}->print($_[0] . "\n") };
 		$logger->(encode_json($log_entry));
 
 		return;
