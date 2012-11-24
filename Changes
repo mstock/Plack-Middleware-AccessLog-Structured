@@ -2,4 +2,6 @@ Revision history for Plack-Middleware-AccessLog-Structured
 
 {{$NEXT}}
 
+0.001000  2012-11-24 16:41:05 Europe/Zurich
+
  - Initial release
