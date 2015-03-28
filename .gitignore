@@ -1,3 +1,4 @@
+/.prove
 /.build
 .*.swp
 /Plack-Middleware-AccessLog-Structured-*
