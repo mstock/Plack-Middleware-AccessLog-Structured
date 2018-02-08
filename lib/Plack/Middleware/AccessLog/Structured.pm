@@ -132,7 +132,7 @@ sub call {
 	return $self->response_cb($res, sub {
 		my ($cb_res) = @_;
 
-		my $h = Plack::Util::headers($res->[1]);
+		my $h = Plack::Util::headers($cb_res->[1]);
 		my $content_type = $h->get('Content-Type');
 		my $log_entry = {
 			class            => ref($self),
@@ -151,7 +151,7 @@ sub call {
 			hostname         => hostname(),
 			# Response data
 			response_status  => $cb_res->[0],
-			content_length   => Plack::Util::content_length($res->[2]) || $h->get('Content-Length'),
+			content_length   => Plack::Util::content_length($cb_res->[2]) || $h->get('Content-Length'),
 			content_type     => defined $content_type ? "$content_type" : undef,
 			# Timing
 			request_duration => ( $t_after - $t_before ) * 1000,
