@@ -1,5 +1,9 @@
 Revision history for Plack-Middleware-AccessLog-Structured
 
+0.001001  2018-02-08 22:16:54+01:00 Europe/Zurich
+
+ - Fix streaming server support
+
 0.001000  2012-11-24 16:41:05 Europe/Zurich
 
  - Initial release
