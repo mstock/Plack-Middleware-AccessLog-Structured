@@ -153,4 +153,36 @@ sub parameter_validation_test : Test(2) {
 }
 
 
+sub delayed_duration_test : Test(3) {
+	my ($self) = @_;
+
+	my $app = sub {
+		my ($env) = @_;
+		return sub {
+			my ($responder) = @_;
+			note 'sleeping for a second';
+			sleep 1;
+			$responder->([ 200, [ ], ['delayed'] ]);
+		}
+	};
+	my @log;
+	my $wrapped_app = Plack::Middleware::AccessLog::Structured->wrap($app,
+		logger  => sub {
+			push @log, @_;
+		},
+	);
+
+	test_psgi($wrapped_app, sub {
+		my ($cb) = @_;
+		my $response = $cb->(GET '/');
+		is($response->code(), 200, 'application executed');
+	});
+
+	is(scalar @log, 1, 'message count ok');
+	my $data = decode_json($log[0]);
+	cmp_ok($data->{request_duration}, '>', 1000.0,
+		'request_duration works for delayed responses');
+}
+
+
 1;
