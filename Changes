@@ -2,6 +2,8 @@ Revision history for Plack-Middleware-AccessLog-Structured
 
 {{$NEXT}}
 
+ - Fix request_duration calculation for delayed responses (nfg)
+
 0.001001  2018-02-08 22:16:54+01:00 Europe/Zurich
 
  - Fix streaming server support
