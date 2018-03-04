@@ -127,11 +127,11 @@ sub call {
 
 	my $t_before = Time::HiRes::time();
 	my $res = $self->app->($env);
-	my $t_after = Time::HiRes::time();
 
 	return $self->response_cb($res, sub {
 		my ($cb_res) = @_;
 
+		my $t_after = Time::HiRes::time();
 		my $h = Plack::Util::headers($cb_res->[1]);
 		my $content_type = $h->get('Content-Type');
 		my $log_entry = {
