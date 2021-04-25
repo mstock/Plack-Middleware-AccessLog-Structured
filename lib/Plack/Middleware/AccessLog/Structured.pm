@@ -9,11 +9,9 @@ use warnings;
 
 use Carp;
 use MRO::Compat;
-use Time::HiRes;
+use Time::Moment;
 use Plack::Util::Accessor qw(logger callback extra_field);
 use Net::Domain qw(hostname hostfqdn);
-use DateTime;
-use Time::HiRes;
 use JSON;
 
 
@@ -36,13 +34,13 @@ sub new {
 sub call {
 	my ($self, $env) = @_;
 
-	my $t_before = Time::HiRes::time();
+	my $t_before = Time::Moment->now;
 	my $res = $self->app->($env);
 
 	return $self->response_cb($res, sub {
 		my ($cb_res) = @_;
 
-		my $t_after = Time::HiRes::time();
+		my $t_after = Time::Moment->now;
 		my $h = Plack::Util::headers($cb_res->[1]);
 		my $content_type = $h->get('Content-Type');
 		my $log_entry = {
@@ -65,9 +63,9 @@ sub call {
 			content_length   => Plack::Util::content_length($cb_res->[2]) || $h->get('Content-Length'),
 			content_type     => defined $content_type ? "$content_type" : undef,
 			# Timing
-			request_duration => ( $t_after - $t_before ) * 1000,
-			date             => DateTime->from_epoch(epoch => $t_before)->strftime('%Y-%m-%dT%H:%M:%S.%3NZ'),
-			epochtime        => $t_before,
+			request_duration => ( $t_before->delta_microseconds($t_after) / 1000 ),
+			date             => $t_before->strftime('%FT%T%3fZ'),
+			epochtime        => $t_before->epoch,
 		};
 
 		if ($self->extra_field()) {
