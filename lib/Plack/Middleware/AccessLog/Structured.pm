@@ -34,13 +34,13 @@ sub new {
 sub call {
 	my ($self, $env) = @_;
 
-	my $t_before = Time::Moment->now;
+	my $t_before = Time::Moment->now_utc();
 	my $res = $self->app->($env);
 
 	return $self->response_cb($res, sub {
 		my ($cb_res) = @_;
 
-		my $t_after = Time::Moment->now;
+		my $t_after = Time::Moment->now_utc();
 		my $h = Plack::Util::headers($cb_res->[1]);
 		my $content_type = $h->get('Content-Type');
 		my $log_entry = {
@@ -65,7 +65,7 @@ sub call {
 			# Timing
 			request_duration => ( $t_before->delta_microseconds($t_after) / 1000 ),
 			date             => $t_before->strftime('%FT%T%3fZ'),
-			epochtime        => $t_before->epoch,
+			epochtime        => $t_before->strftime('%s%3N')/1000,
 		};
 
 		if ($self->extra_field()) {
